@@ -17,8 +17,19 @@ CREATE TABLE `users` (
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
 -- CreateTable
+CREATE TABLE `grupos` (
+    `id` INTEGER NOT NULL AUTO_INCREMENT,
+    `admin_id` INTEGER NOT NULL,
+    `nome` VARCHAR(191) NOT NULL,
+    `descricao` VARCHAR(191) NOT NULL,
+
+    PRIMARY KEY (`id`)
+) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+
+-- CreateTable
 CREATE TABLE `peladas` (
     `id` INTEGER NOT NULL AUTO_INCREMENT,
+    `grupo_id` INTEGER NOT NULL,
     `data` DATETIME(3) NOT NULL,
     `cep` VARCHAR(191) NOT NULL,
 
@@ -43,6 +54,15 @@ CREATE TABLE `times` (
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
 -- CreateTable
+CREATE TABLE `_GrupoToUser` (
+    `A` INTEGER NOT NULL,
+    `B` INTEGER NOT NULL,
+
+    UNIQUE INDEX `_GrupoToUser_AB_unique`(`A`, `B`),
+    INDEX `_GrupoToUser_B_index`(`B`)
+) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+
+-- CreateTable
 CREATE TABLE `_PeladaToUser` (
     `A` INTEGER NOT NULL,
     `B` INTEGER NOT NULL,
@@ -61,10 +81,19 @@ CREATE TABLE `_TimeToUser` (
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
 -- AddForeignKey
+ALTER TABLE `peladas` ADD CONSTRAINT `peladas_grupo_id_fkey` FOREIGN KEY (`grupo_id`) REFERENCES `grupos`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
+
+-- AddForeignKey
 ALTER TABLE `partidas` ADD CONSTRAINT `partidas_pelada_id_fkey` FOREIGN KEY (`pelada_id`) REFERENCES `peladas`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE `partidas` ADD CONSTRAINT `partidas_vencedor_id_fkey` FOREIGN KEY (`vencedor_id`) REFERENCES `times`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE `_GrupoToUser` ADD CONSTRAINT `_GrupoToUser_A_fkey` FOREIGN KEY (`A`) REFERENCES `grupos`(`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE `_GrupoToUser` ADD CONSTRAINT `_GrupoToUser_B_fkey` FOREIGN KEY (`B`) REFERENCES `users`(`id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE `_PeladaToUser` ADD CONSTRAINT `_PeladaToUser_A_fkey` FOREIGN KEY (`A`) REFERENCES `peladas`(`id`) ON DELETE CASCADE ON UPDATE CASCADE;

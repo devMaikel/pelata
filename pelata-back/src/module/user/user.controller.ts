@@ -8,7 +8,13 @@ import {
   Delete,
 } from '@nestjs/common';
 import { UserService } from './user.service';
-import { EmailAndPassword, PatchUserDto, UserDto } from './dto/user.dto';
+import {
+  EmailAndPassword,
+  IdAndToken,
+  IdTokenIdf,
+  PatchUserDto,
+  UserDto,
+} from './dto/user.dto';
 
 @Controller('user')
 export class UserController {
@@ -29,7 +35,7 @@ export class UserController {
     return this.userService.findOne(+id);
   }
 
-  @Patch(':id')
+  @Patch('updatebyid/:id')
   update(@Param('id') id: string, @Body() userData: PatchUserDto) {
     return this.userService.update(+id, userData);
   }
@@ -42,5 +48,42 @@ export class UserController {
   @Post('login')
   login(@Body() userLogin: EmailAndPassword) {
     return this.userService.login(userLogin);
+  }
+
+  @Post('test')
+  test() {
+    return this.userService.test();
+  }
+
+  @Patch('addgol') // passa { id, token } no body e sera adicionado um gol ao jogador com id passado
+  addGol(@Body() userData: IdAndToken) {
+    return this.userService.addGol(userData.id, userData.token);
+  }
+
+  @Patch('addgrupo') // passa { id, token } no body e sera adicionado um gol ao jogador com id passado
+  addGrupo(@Body() userData: IdTokenIdf) {
+    return this.userService.addGrupo(
+      userData.id,
+      userData.token,
+      userData.foreignId,
+    );
+  }
+
+  @Patch('addpelada') // passa { id, token } no body e sera adicionado um gol ao jogador com id passado
+  addPelada(@Body() userData: IdTokenIdf) {
+    return this.userService.addPelada(
+      userData.id,
+      userData.token,
+      userData.foreignId,
+    );
+  }
+
+  @Patch('addtime') // passa { id, token } no body e sera adicionado um gol ao jogador com id passado
+  addTime(@Body() userData: IdTokenIdf) {
+    return this.userService.addTime(
+      userData.id,
+      userData.token,
+      userData.foreignId,
+    );
   }
 }

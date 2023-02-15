@@ -22,35 +22,31 @@ model User {
   bairro String
   cidade String
   estado String
-  grupos_cadastrados Grupo[]
-  peladas_cadastradas Pelada[]
-  times Time[]
+  peladas_cadastradas PeladaOnUser[]
+  times UserOnTime[]
   gols Int
 
   @@map("users")
 }
 
-model Grupo {
-  id  Int @id @default(autoincrement())
-  admin_id Int
-  nome String
-  descricao String
-  peladas Pelada[]
-  jogadores_cadastrados User[]
-
-  @@map("grupos")
-}
-
 model Pelada {
   id  Int @id @default(autoincrement())
-  grupo Grupo @relation(fields: [grupo_id], references: [id])
-  grupo_id Int
   data  DateTime
   cep String
-  jogadores_cadastrados User[]
   jogos Partida[]
+  jogadores PeladaOnUser[]
 
   @@map("peladas")
+}
+
+model PeladaOnUser {
+  user User @relation(fields: [userId], references: [id])
+  userId Int
+  pelada Pelada @relation(fields: [peladaId], references: [id])
+  peladaId Int
+
+  @@id([userId, peladaId])
+  @@map("pelada_on_user")
 }
 
 model Partida {
@@ -66,8 +62,18 @@ model Partida {
 model Time {
   id  Int @id @default(autoincrement())
   cor String
-  jogadores User[]
+  jogadores UserOnTime[]
   vitorias Partida[]
 
   @@map("times")
+}
+
+model UserOnTime {
+  user User @relation(fields: [userId], references: [id])
+  userId Int
+  time Time @relation(fields: [timeId], references: [id])
+  timeId Int
+
+  @@id([userId, timeId])
+  @@map("user_on_time")
 }

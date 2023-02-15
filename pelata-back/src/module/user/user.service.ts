@@ -3,7 +3,7 @@ import { PrismaService } from 'src/database/prisma.service';
 import { cepRequest } from 'src/utils/cepRequest';
 import { PatchUserDto, UserDto } from './dto/user.dto';
 import { createHash } from 'crypto';
-import { createToken } from 'src/utils/tokenFunctions';
+import { createToken, validateFunction } from 'src/utils/tokenFunctions';
 
 @Injectable()
 export class UserService {
@@ -91,6 +91,91 @@ export class UserService {
     }
     delete user.password;
     const token = createToken(user);
-    return { status: 200, message: { ...user, token } };
+    return { ...user, token };
+  }
+
+  async addGol(id: number, token: string) {
+    validateFunction(token);
+    const user = await this.findOne(id);
+    const result = this.prisma.user.update({
+      where: {
+        id,
+      },
+      data: {
+        gols: user.gols + 1,
+      },
+    });
+    return result;
+  }
+
+  async addPelada(id: number, token: string, foreignId: number) {
+    validateFunction(token);
+    try {
+      const result = await this.prisma.user.update({
+        where: { id },
+        data: {
+          peladas_cadastradas: {
+            connect: { id: foreignId },
+          },
+        },
+      });
+      return result;
+    } catch (error) {
+      return error;
+    }
+  }
+
+  async addGrupo(id: number, token: string, foreignId: number) {
+    validateFunction(token);
+    try {
+      const result = await this.prisma.user.update({
+        where: { id },
+        data: {
+          grupos_cadastrados: {
+            connect: { id: foreignId },
+          },
+        },
+      });
+      return result;
+    } catch (error) {
+      return error;
+    }
+  }
+
+  async addTime(id: number, token: string, foreignId: number) {
+    validateFunction(token);
+    try {
+      const result = await this.prisma.user.update({
+        where: { id },
+        data: {
+          times: {
+            connect: { id: foreignId },
+          },
+        },
+      });
+      return result;
+    } catch (error) {
+      return error;
+    }
+  }
+
+  async test() {
+    // const test = await this.prisma.pelada.create({ //adicionar pelada e já cadastrar um jogador
+    //   data: {
+    //     cep: '59060300',
+    //     data: new Date('2023-02-15'),
+    //     jogadores_cadastrados: {
+    //       connect: { id: 1 },
+    //     },
+    //   },
+    // });
+
+    // const test = await this.prisma.user.findFirst({  //buscar por id e incluir o campo peladas_cadastradas
+    //   where: { id: 1 },
+    //   include: {
+    //     peladas_cadastradas: true,
+    //   },
+    // });
+    return test;
   }
 }

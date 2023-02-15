@@ -21,3 +21,14 @@ export type EmailAndPassword = {
   email: string;
   password: string;
 };
+
+export type IdAndToken = {
+  id: number;
+  token: string;
+};
+
+export type IdTokenIdf = {
+  id: number;
+  token: string;
+  foreignId: number;
+};
