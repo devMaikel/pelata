@@ -11,3 +11,13 @@ export type UserDto = {
   estado: string;
   gols: number;
 };
+
+export type PatchUserDto = {
+  username: string;
+  posicao: string;
+};
+
+export type EmailAndPassword = {
+  email: string;
+  password: string;
+};
