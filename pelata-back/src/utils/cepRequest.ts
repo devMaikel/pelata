@@ -1,4 +1,4 @@
-import { ICepReturn } from '../interfaces';
+import { IAdress, ICepReturn } from '../interfaces';
 import axios from 'axios';
 import { UserDto } from 'src/module/user/dto/user.dto';
 
@@ -18,6 +18,30 @@ export class cepRequest {
       return 'error'; //retornar doctor com cep preenchido em caso de sucesso na requisição com dados nulos
     } catch (err) {
       return 'error'; //retornar 'error' em caso de falha na requisição
+    }
+  }
+
+  async getAddressByCep(cep: string): Promise<IAdress | string> {
+    const adress: IAdress = {
+      estado: '',
+      cidade: '',
+      bairro: '',
+      rua: '',
+    };
+    try {
+      const { data } = (await axios(
+        `https://viacep.com.br/ws/${cep}/json/`,
+      )) as ICepReturn;
+      adress.estado = data.uf;
+      adress.cidade = data.localidade;
+      adress.bairro = data.bairro;
+      adress.rua = data.logradouro;
+      if (adress.rua !== '') {
+        return adress;
+      }
+      return 'cep inválido';
+    } catch (err) {
+      return err;
     }
   }
 }

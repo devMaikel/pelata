@@ -44,7 +44,13 @@ export class UserService {
   }
 
   async findAll() {
-    const allUsers = await this.prisma.user.findMany();
+    const allUsers = await this.prisma.user.findMany({
+      include: {
+        grupos_cadastrados: true,
+        peladas_cadastradas: true,
+        times: true,
+      },
+    });
     allUsers.forEach((e) => delete e.password);
     return allUsers;
   }

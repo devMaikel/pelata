@@ -12,3 +12,10 @@ export interface ICepReturn {
     siafi: string;
   };
 }
+
+export interface IAdress {
+  estado: string;
+  cidade: string;
+  bairro: string;
+  rua: string;
+}

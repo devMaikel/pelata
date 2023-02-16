@@ -6,14 +6,14 @@ export class CriarGrupo {
 }
 
 export class CriarPelada {
-  grupoId: number;
+  grupo_id: number;
   data: string;
   cep: string;
   token: string;
 }
 
 export class CriarPartida {
-  peladaId: number;
+  pelada_id: number;
   token: string;
 }
 

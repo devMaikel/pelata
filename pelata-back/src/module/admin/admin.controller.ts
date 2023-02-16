@@ -13,7 +13,7 @@ import {
   CriarPartida,
   CriarPelada,
   CriarTime,
-} from './dto/create-admin.dto';
+} from './dto/admin.dto';
 
 @Controller('admin')
 export class AdminController {
@@ -25,18 +25,18 @@ export class AdminController {
   }
 
   @Post('criarpelada')
-  criarPelada(@Body() createAdminDto: CriarPelada) {
-    return this.adminService.create(createAdminDto);
+  criarPelada(@Body() data: CriarPelada) {
+    return this.adminService.criarPelada(data);
   }
 
   @Post('criartime')
-  criarTime(@Body() createAdminDto: CriarTime) {
-    return this.adminService.create(createAdminDto);
+  criarTime(@Body() data: CriarTime) {
+    return this.adminService.criarTime(data);
   }
 
   @Post('criarpartida')
-  criarPartida(@Body() createAdminDto: CriarPartida) {
-    return this.adminService.create(createAdminDto);
+  criarPartida(@Body() data: CriarPartida) {
+    return this.adminService.criarPartida(data);
   }
 
   @Get()
