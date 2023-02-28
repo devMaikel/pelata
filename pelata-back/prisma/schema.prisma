@@ -16,7 +16,7 @@ model User {
   email String @unique
   password String
   username String
-  posicao String
+  posicao String @default("Não definida")
   cep String
   rua String
   bairro String
@@ -25,7 +25,7 @@ model User {
   grupos_cadastrados Grupo[]
   peladas_cadastradas Pelada[]
   times Time[]
-  gols Int
+  gols Int @default(0)
 
   @@map("users")
 }
@@ -34,7 +34,7 @@ model Grupo {
   id  Int @id @default(autoincrement()) @unique
   admin_id Int
   nome String
-  descricao String
+  descricao String @default("O camarada não colocou descrição")
   peladas Pelada[]
   jogadores_cadastrados User[]
 
