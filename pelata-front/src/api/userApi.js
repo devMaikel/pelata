@@ -27,3 +27,16 @@ export const checkToken = async (token) => {
     return false;
   }
 };
+
+export const getGrupos = async (token) => {
+  const api = axios.create({
+    baseURL: 'http://localhost:3000/admin',
+  });
+  try {
+    const data = await api.post('/findallgrupos', { token: token });
+    return data;
+  } catch (error) {
+    console.log(error);
+    return false;
+  }
+}

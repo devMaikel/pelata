@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom'
-import Header from '../components/Header';
+import LoginHeader from '../components/LoginHeader';
 import { checkToken, loginUser } from '../api/userApi';
 import getFromLocalStorage from '../helpers/getFromLS';
 
@@ -61,7 +61,7 @@ export default function LoginPage() {
 
   return (
     <div>
-      <Header/>
+      <LoginHeader/>
       <div className='loginWindow'>
         <input type="text" placeholder="Seu e-mail" autoFocus={ true } name="email-input" onChange={ userOnChange }/>
         <input type="password" placeholder="Senha" onChange={ userOnChange }/>

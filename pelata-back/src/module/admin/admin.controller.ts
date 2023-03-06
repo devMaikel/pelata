@@ -40,7 +40,7 @@ export class AdminController {
     return this.adminService.criarPartida(data);
   }
 
-  @Get('findallgrupos')
+  @Post('findallgrupos')
   findAllGrupos(@Body() data: ITokenObject) {
     return this.adminService.findAllGrupos(data.token);
   }
