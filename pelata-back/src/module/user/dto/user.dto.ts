@@ -46,3 +46,7 @@ export type IdTokenIdf = {
   token: string;
   foreignId: number;
 };
+
+export type TokenObj = {
+  token: string;
+};

@@ -1,10 +1,13 @@
 import React, { useEffect, useState } from 'react';
-// import { useNavigate } from 'react-router-dom'
+import { useNavigate } from 'react-router-dom'
 import Header from '../components/Header';
-import { loginUser } from '../api/userApi';
+import { checkToken, loginUser } from '../api/userApi';
+import getFromLocalStorage from '../helpers/getFromLS';
 
 export default function LoginPage() {
-  // let navigate = useNavigate();
+  let navigate = useNavigate();
+  const homePath = '/home';
+
   const [ inputEmail, setInputEmail ] = useState('');
   const [ inputPassword, setInputPassword ] = useState('');
   const [ loginBtnIsDisabled, setLoginBtnIsDisabled ] = useState(true);
@@ -19,15 +22,36 @@ export default function LoginPage() {
       setLoginBtnIsDisabled(true);
     }
   }
+
+  const tokenValidate = async () => {
+    const userData = getFromLocalStorage('userPlt');
+    if(userData) {
+      const tokenIsValid = await checkToken(userData.token);
+      if(tokenIsValid) {
+        navigate(homePath);
+      }
+    }
+  };
+
+  useEffect(() => {
+    tokenValidate();
+  });
   
   useEffect(() => {
     validateInputs()
   // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [inputEmail, inputPassword])
+  }, [inputEmail, inputPassword]);
+
+  useEffect(() => {
+    if (isLogged) {
+      navigate(homePath);
+    }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [isLogged]);
 
   const userOnChange = ({ target: { value, name }}) => {
     name === 'email-input' ? setInputEmail(value) : setInputPassword(value);
-  }
+  };
 
   const loginClick = async (body) => {
     const loginStatus = await loginUser(body);
@@ -56,11 +80,6 @@ export default function LoginPage() {
         <p>Não tem uma conta ainda? Faça o seu cadastro no botão abaixo!</p>
         <button type='button'>Cadastre-se</button>
       </div>
-      { isLogged && <p>wtf velhorr o maluco logou!</p>}
     </div>
   )
 }
-
-//configurar um alerta melhor para usuario invalid
-//desenvolver um mecanismo de pegar o usuario no localstorage caso o tenha e já sair da tela de login
-//somente sair da tela de login se o token de user salvo no LS for ainda válido para logar '-'

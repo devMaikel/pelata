@@ -13,6 +13,7 @@ import {
   IdAndToken,
   IdTokenIdf,
   PatchUserDto,
+  TokenObj,
   UserDto,
 } from './dto/user.dto';
 
@@ -50,9 +51,9 @@ export class UserController {
     return this.userService.login(userLogin);
   }
 
-  @Post('test')
-  test() {
-    return this.userService.test();
+  @Post('checktoken')
+  checkToken(@Body() token: TokenObj) {
+    return this.userService.checkToken(token);
   }
 
   @Patch('addgol') // passa { id, token } no body e sera adicionado um gol ao jogador com id passado

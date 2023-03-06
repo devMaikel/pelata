@@ -15,3 +15,15 @@ export const loginUser = async (body) => {
     return false;
   }
 };
+
+export const checkToken = async (token) => {
+  const api = axios.create({
+    baseURL: 'http://localhost:3000/user',
+  });
+  try {
+    await api.post('/checktoken', { token: token });
+    return true;
+  } catch (error) {
+    return false;
+  }
+};

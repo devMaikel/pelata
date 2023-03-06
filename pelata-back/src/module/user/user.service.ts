@@ -1,7 +1,12 @@
 import { HttpException, Injectable } from '@nestjs/common';
 import { PrismaService } from 'src/database/prisma.service';
 import { cepRequest } from 'src/utils/cepRequest';
-import { PatchUserDto, UserDto, UserDtoNoPassword } from './dto/user.dto';
+import {
+  PatchUserDto,
+  TokenObj,
+  UserDto,
+  UserDtoNoPassword,
+} from './dto/user.dto';
 import { createHash } from 'crypto';
 import { createToken, validateFunction } from 'src/utils/tokenFunctions';
 
@@ -163,6 +168,11 @@ export class UserService {
     } catch (error) {
       return error;
     }
+  }
+
+  async checkToken(token: TokenObj) {
+    validateFunction(token.token);
+    return 'Token ok';
   }
 
   async test() {
