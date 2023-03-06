@@ -53,6 +53,7 @@ model Pelada {
   estado String?
   jogadores_cadastrados User[]
   jogos Partida[]
+  times Time[]
 
   @@map("peladas")
 }
@@ -70,6 +71,8 @@ model Partida {
 model Time {
   id  Int @id @default(autoincrement()) @unique
   cor String
+  pelada_id Int
+  pelada Pelada @relation(fields: [pelada_id], references: [id])
   jogadores User[]
   vitorias Partida[]
 

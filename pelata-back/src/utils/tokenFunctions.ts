@@ -30,4 +30,5 @@ export const validateFunction = (token: string) => {
       cause: new Error('Token inválido'),
     });
   }
+  return tokenValidate.data;
 };

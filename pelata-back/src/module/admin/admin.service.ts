@@ -3,6 +3,7 @@ import { PrismaService } from 'src/database/prisma.service';
 import { IAdress } from 'src/interfaces';
 import { cepRequest } from 'src/utils/cepRequest';
 import { validateFunction } from 'src/utils/tokenFunctions';
+import { UserDtoNoPassword } from '../user/dto/user.dto';
 import {
   CriarGrupo,
   CriarPartida,
@@ -19,12 +20,12 @@ export class AdminService {
   // }
 
   async criarGrupo(data: CriarGrupo) {
-    validateFunction(data.token);
+    const userData = validateFunction(data.token) as UserDtoNoPassword;
     const response = await this.prisma.grupo.create({
       data: {
         nome: data.descricao,
         descricao: data.descricao,
-        admin_id: data.admin_id,
+        admin_id: userData.id,
       },
     });
     return response;
@@ -58,7 +59,7 @@ export class AdminService {
     const response = await this.prisma.partida.create({
       data: {
         pelada_id: data.pelada_id,
-        vencedor_id: 0,
+        vencedor_id: data.vencedor_id,
       },
     });
     return response;
@@ -69,13 +70,20 @@ export class AdminService {
     const response = await this.prisma.time.create({
       data: {
         cor: data.cor,
+        pelada_id: data.pelada_id,
       },
     });
     return response;
   }
 
-  findAll() {
-    return `This action returns all admin`;
+  async findAllGrupos(token: string) {
+    validateFunction(token);
+    return await this.prisma.grupo.findMany({
+      include: {
+        peladas: true,
+        jogadores_cadastrados: true,
+      },
+    });
   }
 
   findOne(id: number) {

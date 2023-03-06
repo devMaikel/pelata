@@ -7,6 +7,7 @@ import {
   Param,
   Delete,
 } from '@nestjs/common';
+import { ITokenObject } from 'src/interfaces';
 import { AdminService } from './admin.service';
 import {
   CriarGrupo,
@@ -39,9 +40,9 @@ export class AdminController {
     return this.adminService.criarPartida(data);
   }
 
-  @Get()
-  findAll() {
-    return this.adminService.findAll();
+  @Get('findallgrupos')
+  findAllGrupos(@Body() data: ITokenObject) {
+    return this.adminService.findAllGrupos(data.token);
   }
 
   @Get(':id')

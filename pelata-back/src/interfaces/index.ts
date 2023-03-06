@@ -19,3 +19,7 @@ export interface IAdress {
   bairro: string;
   rua: string;
 }
+
+export interface ITokenObject {
+  token: string;
+}

@@ -7,7 +7,7 @@ async function main() {
     create: {
       username: 'maikel',
       email: 'maikel@email.com',
-      password: '123456',
+      password: 'e10adc3949ba59abbe56e057f20f883e',
       cep: '59060230',
       estado: 'RN',
       cidade: 'Natal',
@@ -27,7 +27,21 @@ async function main() {
     },
   });
 
-  console.log(user, grupo);
+  const pelada = await prisma.pelada.upsert({
+    where: { id: 1 },
+    update: {},
+    create: {
+      grupo_id: 1,
+      data: new Date('01-01-1900'),
+      cep: 'testing',
+      rua: 'testing',
+      bairro: 'testing',
+      cidade: 'testing',
+      estado: 'testing',
+    },
+  });
+
+  console.log(user, grupo, pelada);
 }
 
 main()

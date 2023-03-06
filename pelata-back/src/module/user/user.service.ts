@@ -1,7 +1,7 @@
 import { HttpException, Injectable } from '@nestjs/common';
 import { PrismaService } from 'src/database/prisma.service';
 import { cepRequest } from 'src/utils/cepRequest';
-import { PatchUserDto, UserDto } from './dto/user.dto';
+import { PatchUserDto, UserDto, UserDtoNoPassword } from './dto/user.dto';
 import { createHash } from 'crypto';
 import { createToken, validateFunction } from 'src/utils/tokenFunctions';
 
@@ -91,8 +91,8 @@ export class UserService {
     const passwordMd5 = createHash('md5').update(password).digest('hex');
     const user = await this.prisma.user.findFirst({ where: { email } });
     if (!user || user.password !== passwordMd5) {
-      throw new HttpException('Cep inválido', 404, {
-        cause: new Error('Email ou senha inválido'),
+      throw new HttpException('Email ou senha inválidos', 404, {
+        cause: new Error('Email ou senha inválidos'),
       });
     }
     delete user.password;
@@ -115,10 +115,10 @@ export class UserService {
   }
 
   async addPelada(id: number, token: string, foreignId: number) {
-    validateFunction(token);
+    const userData = validateFunction(token) as UserDtoNoPassword;
     try {
       const result = await this.prisma.user.update({
-        where: { id },
+        where: { id: userData.id },
         data: {
           peladas_cadastradas: {
             connect: { id: foreignId },
