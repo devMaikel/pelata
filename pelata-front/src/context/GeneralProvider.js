@@ -4,12 +4,15 @@ import GeneralContext from './GeneralContext';
 
 export default function GeneralProvider( { children }) {
   const [ grupos, setGrupos ] = useState([]);
+  const [ userData, setUserData ] = useState({});
   return (
     <GeneralContext.Provider
       value={
         {
           grupos,
           setGrupos,
+          userData,
+          setUserData,
         }
       }
     >

@@ -6,10 +6,11 @@ import GeneralContext from '../context/GeneralContext'
 import getFromLocalStorage from '../helpers/getFromLS';
 
 export default function HomePage() {
-  const { grupos, setGrupos } = useContext(GeneralContext);
+  const { grupos, setGrupos, setUserData } = useContext(GeneralContext);
 
   const getAllGrupos = async () => {
     const userData = getFromLocalStorage('userPlt');
+    setUserData(userData);
     const gruposData = await getGrupos(userData.token);
     setGrupos(gruposData.data);
     console.log(gruposData.data);
@@ -25,13 +26,14 @@ export default function HomePage() {
       <HomeHeader/>
       <div>
         <h2>Grupos disponíveis</h2>
-        { grupos.length > 0 && grupos.map((e, index) => 
+        { grupos.length > 0 && grupos.map((e, index) =>
           (
             <GroupCard
               nome= { e.nome }
               descricao= { e.descricao }
               jogadores_cadastrados= { e.jogadores_cadastrados }
               peladas= { e.peladas }
+              idGrupo= { e.id }
               key= { index }
             />
           )

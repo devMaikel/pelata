@@ -70,6 +70,15 @@ export class UserController {
     );
   }
 
+  @Patch('rmvgrupo') // passa { id, token } no body e sera adicionado um gol ao jogador com id passado
+  rmvGrupo(@Body() userData: IdTokenIdf) {
+    return this.userService.rmvGrupo(
+      userData.id,
+      userData.token,
+      userData.foreignId,
+    );
+  }
+
   @Patch('addpelada') // passa { id, token } no body e sera adicionado um gol ao jogador com id passado
   addPelada(@Body() userData: IdTokenIdf) {
     return this.userService.addPelada(
@@ -79,9 +88,27 @@ export class UserController {
     );
   }
 
+  @Patch('rmvpelada') // passa { id, token } no body e sera adicionado um gol ao jogador com id passado
+  rmvPelada(@Body() userData: IdTokenIdf) {
+    return this.userService.rmvPelada(
+      userData.id,
+      userData.token,
+      userData.foreignId,
+    );
+  }
+
   @Patch('addtime') // passa { id, token } no body e sera adicionado um gol ao jogador com id passado
   addTime(@Body() userData: IdTokenIdf) {
     return this.userService.addTime(
+      userData.id,
+      userData.token,
+      userData.foreignId,
+    );
+  }
+
+  @Patch('rmvtime') // passa { id, token } no body e sera adicionado um gol ao jogador com id passado
+  rmvTime(@Body() userData: IdTokenIdf) {
+    return this.userService.rmvTime(
       userData.id,
       userData.token,
       userData.foreignId,

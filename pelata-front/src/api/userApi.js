@@ -40,3 +40,29 @@ export const getGrupos = async (token) => {
     return false;
   }
 }
+
+export const addGrupo = async (token, idUser, idGrupo) => {
+  const api = axios.create({
+    baseURL: 'http://localhost:3000/user',
+  });
+  try {
+    const data = await api.patch('/addgrupo', { token: token, id: idUser, foreignId: idGrupo });
+    return data;
+  } catch (error) {
+    console.log(error);
+    return false;
+  }
+}
+
+export const rmvGrupo = async (token, idUser, idGrupo) => {
+  const api = axios.create({
+    baseURL: 'http://localhost:3000/user',
+  });
+  try {
+    const data = await api.patch('/rmvgrupo', { token: token, id: idUser, foreignId: idGrupo });
+    return data;
+  } catch (error) {
+    console.log(error);
+    return false;
+  }
+}

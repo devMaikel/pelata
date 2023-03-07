@@ -81,7 +81,16 @@ export class AdminService {
     return await this.prisma.grupo.findMany({
       include: {
         peladas: true,
-        jogadores_cadastrados: true,
+        jogadores_cadastrados: {
+          select: {
+            id: true,
+            username: true,
+            cidade: true,
+            estado: true,
+            posicao: true,
+            gols: true,
+          },
+        },
       },
     });
   }

@@ -130,6 +130,25 @@ export class UserService {
           },
         },
       });
+      delete result.password;
+      return result;
+    } catch (error) {
+      return error;
+    }
+  }
+
+  async rmvPelada(id: number, token: string, foreignId: number) {
+    const userData = validateFunction(token) as UserDtoNoPassword;
+    try {
+      const result = await this.prisma.user.update({
+        where: { id: userData.id },
+        data: {
+          peladas_cadastradas: {
+            disconnect: { id: foreignId },
+          },
+        },
+      });
+      delete result.password;
       return result;
     } catch (error) {
       return error;
@@ -147,6 +166,25 @@ export class UserService {
           },
         },
       });
+      delete result.password;
+      return result;
+    } catch (error) {
+      return error;
+    }
+  }
+
+  async rmvGrupo(id: number, token: string, foreignId: number) {
+    validateFunction(token);
+    try {
+      const result = await this.prisma.user.update({
+        where: { id },
+        data: {
+          grupos_cadastrados: {
+            disconnect: { id: foreignId },
+          },
+        },
+      });
+      delete result.password;
       return result;
     } catch (error) {
       return error;
@@ -164,6 +202,25 @@ export class UserService {
           },
         },
       });
+      delete result.password;
+      return result;
+    } catch (error) {
+      return error;
+    }
+  }
+
+  async rmvTime(id: number, token: string, foreignId: number) {
+    validateFunction(token);
+    try {
+      const result = await this.prisma.user.update({
+        where: { id },
+        data: {
+          times: {
+            disconnect: { id: foreignId },
+          },
+        },
+      });
+      delete result.password;
       return result;
     } catch (error) {
       return error;
