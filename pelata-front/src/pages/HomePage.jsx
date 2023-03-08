@@ -13,7 +13,6 @@ export default function HomePage() {
     setUserData(userData);
     const gruposData = await getGrupos(userData.token);
     setGrupos(gruposData.data);
-    console.log(gruposData.data);
   }
 
   useEffect(() => {
