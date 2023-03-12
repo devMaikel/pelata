@@ -4,6 +4,7 @@ import GeneralProvider from './context/GeneralProvider';
 import GroupPage from './pages/GroupPage';
 import HomePage from './pages/HomePage';
 import LoginPage from './pages/LoginPage';
+import 'bootstrap/dist/css/bootstrap.min.css';
 
 function App() {
   return (
