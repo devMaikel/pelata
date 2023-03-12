@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import getFromLocalStorage from '../helpers/getFromLS';
+import Accordion from 'react-bootstrap/Accordion';
 
 export default function HomeHeader() {
   const [ userData, setUserData ] = useState('');
@@ -10,13 +11,17 @@ export default function HomeHeader() {
   }, []);
 
   return (
-    <div>
+    <div style={{ paddingBottom: '15px' }}>
       <p>Pelata 0.1</p>
-      <div>
-        <h3> { userData.username } </h3>
-        <h4> { userData.posicao } </h4>
-        <h4> Gols marcados: { userData.gols } </h4>
-      </div>
+      <Accordion defaultActiveKey="1">
+        <Accordion.Item eventKey="0">
+          <Accordion.Header>Mostrar detalhes de { userData.username }</Accordion.Header>
+          <Accordion.Body>
+            <p> Posição: { userData.posicao } </p>
+            <p> Gols marcados: { userData.gols } </p>
+          </Accordion.Body>
+        </Accordion.Item>
+      </Accordion>
     </div>
   )
 }

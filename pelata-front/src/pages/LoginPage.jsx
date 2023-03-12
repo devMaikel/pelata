@@ -90,18 +90,7 @@ export default function LoginPage() {
             Login
           </Button>
         </Form>
-        {/* <input type="text" placeholder="Seu e-mail" autoFocus={ true } name="email-input" onChange={ userOnChange }/>
-        <input type="password" placeholder="Senha" onChange={ userOnChange }/> */}
         <br></br>
-        {/* <Button
-          onClick={ () => loginClick({ email: inputEmail, password: inputPassword}) }
-          disabled={ loginBtnIsDisabled }
-          variant="primary"
-          size='lg'
-        >
-          Login
-        </Button> */}
-        {/* { invalidLogin && <p>Usuário ou senha incorretos</p> } */}
         <Modal show={invalidLogin} onHide={ () => { setInvalidLogin(false)}}>
         <Modal.Header closeButton>
           <Modal.Title>Email ou senha incorretos</Modal.Title>

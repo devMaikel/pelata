@@ -4,6 +4,7 @@ import GroupCard from '../components/GroupCard';
 import HomeHeader from '../components/HomeHeader'
 import GeneralContext from '../context/GeneralContext'
 import getFromLocalStorage from '../helpers/getFromLS';
+import CardGroup from 'react-bootstrap/CardGroup';
 
 export default function HomePage() {
   const { grupos, setGrupos, setUserData } = useContext(GeneralContext);
@@ -25,18 +26,20 @@ export default function HomePage() {
       <HomeHeader/>
       <div>
         <h2>Grupos disponíveis</h2>
-        { grupos.length > 0 && grupos.map((e, index) =>
-          (
-            <GroupCard
-              nome= { e.nome }
-              descricao= { e.descricao }
-              jogadores_cadastrados= { e.jogadores_cadastrados }
-              peladas= { e.peladas }
-              idGrupo= { e.id }
-              key= { index }
-            />
-          )
-        )}
+        <CardGroup>
+          { grupos.length > 0 && grupos.map((e, index) =>
+            (
+              <GroupCard
+                nome= { e.nome }
+                descricao= { e.descricao }
+                jogadores_cadastrados= { e.jogadores_cadastrados }
+                peladas= { e.peladas }
+                idGrupo= { e.id }
+                key= { index }
+              />
+            )
+          )}
+        </CardGroup>
       </div>
     </div>
   )

@@ -66,3 +66,16 @@ export const rmvGrupo = async (token, idUser, idGrupo) => {
     return false;
   }
 }
+
+export const getUserById = async (id) => {
+  const api = axios.create({
+    baseURL: 'http://localhost:3000/user',
+  });
+  try {
+    const data = await api.get(`/${id}`);
+    return data;
+  } catch (error) {
+    console.log(error);
+    return false;
+  }
+}
