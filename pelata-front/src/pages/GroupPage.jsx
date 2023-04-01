@@ -82,8 +82,8 @@ export default function GroupPage() {
                   <th>#</th>
                   <th>Nome</th>
                   <th>Posição</th>
-                  <th>Cidade/Estado</th>
                   <th>Gols marcados</th>
+                  <th>Vitórias/Derrotas/Empates</th>
                 </tr>
               </thead>
               <tbody>
@@ -91,10 +91,10 @@ export default function GroupPage() {
                   grupo.nome && grupo.jogadores_cadastrados.map((e, index) => (
                     <tr key={ index }>
                       <td>{ index +1 }</td>
-                      <td>{ e.username }</td>
+                      <td>{ e.nome }</td>
                       <td>{ e.posicao }</td>
-                      <td>{ `${e.cidade}/${e.estado}`}</td>
-                      <td>{ e.gols }</td>
+                      <td>{ e.gols}</td>
+                      <td>{ `${e.vitorias} / ${e.derrotas} / ${e.empates}` }</td>
                     </tr>
                   ))
                 }

@@ -11,6 +11,7 @@ import Form from 'react-bootstrap/Form';
 export default function LoginPage() {
   let navigate = useNavigate();
   const homePath = '/home';
+  const registerPath = '/register'
 
   const [ inputEmail, setInputEmail ] = useState('');
   const [ inputPassword, setInputPassword ] = useState('');
@@ -91,7 +92,7 @@ export default function LoginPage() {
           </Button>
         </Form>
         <br></br>
-        <Modal show={invalidLogin} onHide={ () => { setInvalidLogin(false)}}>
+      <Modal show={invalidLogin} onHide={ () => { setInvalidLogin(false)}}>
         <Modal.Header closeButton>
           <Modal.Title>Email ou senha incorretos</Modal.Title>
         </Modal.Header>
@@ -107,7 +108,7 @@ export default function LoginPage() {
       </div>
       <div>
         <p>Não tem uma conta ainda? Faça o seu cadastro no botão abaixo!</p>
-        <Button variant="success">Cadastre-se</Button>
+        <Button variant="success" onClick={ () => { navigate(registerPath)}}>Cadastre-se</Button>
       </div>
     </div>
   )

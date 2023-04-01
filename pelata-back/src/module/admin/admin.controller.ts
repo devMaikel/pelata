@@ -11,9 +11,9 @@ import { ITokenObject } from 'src/interfaces';
 import { AdminService } from './admin.service';
 import {
   CriarGrupo,
-  CriarPartida,
+  // CriarPartida,
   CriarPelada,
-  CriarTime,
+  // CriarTime,
 } from './dto/admin.dto';
 
 @Controller('admin')
@@ -30,16 +30,6 @@ export class AdminController {
     return this.adminService.criarPelada(data);
   }
 
-  @Post('criartime')
-  criarTime(@Body() data: CriarTime) {
-    return this.adminService.criarTime(data);
-  }
-
-  @Post('criarpartida')
-  criarPartida(@Body() data: CriarPartida) {
-    return this.adminService.criarPartida(data);
-  }
-
   @Post('findallgrupos')
   findAllGrupos(@Body() data: ITokenObject) {
     return this.adminService.findAllGrupos(data.token);
@@ -50,13 +40,23 @@ export class AdminController {
     return this.adminService.findOne(+id);
   }
 
+  @Delete(':id')
+  remove(@Param('id') id: string) {
+    return this.adminService.remove(+id);
+  }
+
   // @Patch(':id')
   // update(@Param('id') id: string, @Body() updateAdminDto: UpdateAdminDto) {
   //   return this.adminService.update(+id, updateAdminDto);
   // }
 
-  @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.adminService.remove(+id);
-  }
+  // @Post('criartime')
+  // criarTime(@Body() data: CriarTime) {
+  //   return this.adminService.criarTime(data);
+  // }
+
+  // @Post('criarpartida')
+  // criarPartida(@Body() data: CriarPartida) {
+  //   return this.adminService.criarPartida(data);
+  // }
 }

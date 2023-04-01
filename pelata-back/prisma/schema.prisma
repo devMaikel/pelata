@@ -16,27 +16,43 @@ model User {
   email String @unique
   password String
   username String
-  posicao String @default("Não definida")
   cep String
   rua String
   bairro String
   cidade String
   estado String
-  grupos_cadastrados Grupo[]
-  peladas_cadastradas Pelada[]
-  times Time[]
-  gols Int @default(0)
+  jogador Jogador?
+  grupos_admin Grupo?
+  // jogador_relation Jogador @relation(fields: [jogador_id], references: [id])
 
   @@map("users")
 }
 
+model Jogador {
+  id Int @id @default(autoincrement()) @unique
+  user User? @relation(fields: [user_id], references: [id])
+  user_id Int? @unique
+  nome String
+  posicao String @default("Não definida")
+  gols Int @default(0)
+  vitorias Int @default(0)
+  derrotas Int @default(0)
+  empates Int @default(0)
+  grupos_cadastrados Grupo[]
+  peladas_cadastradas Pelada[]
+  // times Time[]
+
+  @@map("jogadores")
+}
+
 model Grupo {
   id  Int @id @default(autoincrement()) @unique
-  admin_id Int
+  admin User @relation(fields: [admin_id], references: [id])
+  admin_id Int @unique
   nome String
   descricao String @default("O camarada não colocou descrição")
   peladas Pelada[]
-  jogadores_cadastrados User[]
+  jogadores_cadastrados Jogador[]
 
   @@map("grupos")
 }
@@ -51,30 +67,33 @@ model Pelada {
   bairro String?
   cidade String?
   estado String?
-  jogadores_cadastrados User[]
-  jogos Partida[]
-  times Time[]
+  jogadores_cadastrados Jogador[]
+  // jogos Partida[]
+  // times Time[]
 
   @@map("peladas")
 }
 
-model Partida {
-  id  Int @id @default(autoincrement()) @unique
-  pelada_id Int
-  pelada Pelada @relation(fields: [pelada_id], references: [id])
-  vencedor_id Int
-  vencedor Time @relation(fields: [vencedor_id], references: [id])
+// model Partida {
+//   id  Int @id @default(autoincrement()) @unique
+//   pelada_id Int
+//   pelada Pelada @relation(fields: [pelada_id], references: [id])
+//   vencedor_id Int
+//   vencedor Time @relation(fields: [vencedor_id], references: [id])
 
-  @@map("partidas")
-}
+//   @@map("partidas")
+// }
 
-model Time {
-  id  Int @id @default(autoincrement()) @unique
-  cor String
-  pelada_id Int
-  pelada Pelada @relation(fields: [pelada_id], references: [id])
-  jogadores User[]
-  vitorias Partida[]
+// model Time {
+//   id  Int @id @default(autoincrement()) @unique
+//   cor String
+//   pelada_id Int
+//   pelada Pelada @relation(fields: [pelada_id], references: [id])
+//   jogadores Jogador[]
+//   // vitorias Partida[]
+//   vitorias Int @default(0)
+//   derrotas Int @default(0)
+//   empates Int @default(0)
 
-  @@map("times")
-}
+//   @@map("times")
+// }

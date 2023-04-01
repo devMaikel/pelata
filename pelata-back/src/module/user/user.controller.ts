@@ -12,7 +12,7 @@ import {
   EmailAndPassword,
   IdAndToken,
   IdTokenIdf,
-  PatchUserDto,
+  PatchJogadorDto,
   TokenObj,
   UserDto,
 } from './dto/user.dto';
@@ -26,10 +26,10 @@ export class UserController {
     return this.userService.create(userData);
   }
 
-  @Get()
-  findAll() {
-    return this.userService.findAll();
-  }
+  // @Get()
+  // findAll() {
+  //   return this.userService.findAll();
+  // }
 
   @Get(':id')
   findOne(@Param('id') id: string) {
@@ -37,8 +37,8 @@ export class UserController {
   }
 
   @Patch('updatebyid/:id')
-  update(@Param('id') id: string, @Body() userData: PatchUserDto) {
-    return this.userService.update(+id, userData);
+  update(@Param('id') id: string, @Body() userData: PatchJogadorDto) {
+    return this.userService.updateJogadorById(+id, userData);
   }
 
   @Delete(':id')
@@ -97,21 +97,21 @@ export class UserController {
     );
   }
 
-  @Patch('addtime') // passa { id, token } no body e sera adicionado um gol ao jogador com id passado
-  addTime(@Body() userData: IdTokenIdf) {
-    return this.userService.addTime(
-      userData.id,
-      userData.token,
-      userData.foreignId,
-    );
-  }
+  // @Patch('addtime') // passa { id, token } no body e sera adicionado um gol ao jogador com id passado
+  // addTime(@Body() userData: IdTokenIdf) {
+  //   return this.userService.addTime(
+  //     userData.id,
+  //     userData.token,
+  //     userData.foreignId,
+  //   );
+  // }
 
-  @Patch('rmvtime') // passa { id, token } no body e sera adicionado um gol ao jogador com id passado
-  rmvTime(@Body() userData: IdTokenIdf) {
-    return this.userService.rmvTime(
-      userData.id,
-      userData.token,
-      userData.foreignId,
-    );
-  }
+  // @Patch('rmvtime') // passa { id, token } no body e sera adicionado um gol ao jogador com id passado
+  // rmvTime(@Body() userData: IdTokenIdf) {
+  //   return this.userService.rmvTime(
+  //     userData.id,
+  //     userData.token,
+  //     userData.foreignId,
+  //   );
+  // }
 }

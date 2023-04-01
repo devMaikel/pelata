@@ -2,7 +2,7 @@ import { HttpException, Injectable } from '@nestjs/common';
 import { PrismaService } from 'src/database/prisma.service';
 import { cepRequest } from 'src/utils/cepRequest';
 import {
-  PatchUserDto,
+  PatchJogadorDto,
   TokenObj,
   UserDto,
   UserDtoNoPassword,
@@ -40,7 +40,6 @@ export class UserService {
         cause: new Error('Cep inválido'),
       });
     }
-    data.gols = 0;
     data.password = createHash('md5').update(data.password).digest('hex');
     const newUser = await this.prisma.user.create({
       data,
@@ -48,17 +47,17 @@ export class UserService {
     return newUser;
   }
 
-  async findAll() {
-    const allUsers = await this.prisma.user.findMany({
-      include: {
-        grupos_cadastrados: true,
-        peladas_cadastradas: true,
-        times: true,
-      },
-    });
-    allUsers.forEach((e) => delete e.password);
-    return allUsers;
-  }
+  // async findAll() {
+  //   const allUsers = await this.prisma.user.findMany({
+  //     include: {
+  //       grupos_cadastrados: true,
+  //       peladas_cadastradas: true,
+  //       times: true,
+  //     },
+  //   });
+  //   allUsers.forEach((e) => delete e.password);
+  //   return allUsers;
+  // }
 
   async findOne(id: number) {
     const user = await this.prisma.user.findFirst({
@@ -68,18 +67,24 @@ export class UserService {
     return user;
   }
 
-  async update(id: number, data: PatchUserDto) {
-    const updateUser = await this.prisma.user.update({
+  async findOneJogador(id: number) {
+    const jogador = await this.prisma.jogador.findFirst({
+      where: { id },
+    });
+    return jogador;
+  }
+
+  async updateJogadorById(id: number, data: PatchJogadorDto) {
+    const updateJogador = await this.prisma.jogador.update({
       where: {
         id,
       },
       data: {
-        username: data.username,
+        nome: data.username,
         posicao: data.posicao,
       },
     });
-    delete updateUser.password;
-    return updateUser;
+    return updateJogador;
   }
 
   async remove(id: number) {
@@ -107,13 +112,13 @@ export class UserService {
 
   async addGol(id: number, token: string) {
     validateFunction(token);
-    const user = await this.findOne(id);
-    const result = this.prisma.user.update({
+    const jogador = await this.findOneJogador(id);
+    const result = this.prisma.jogador.update({
       where: {
         id,
       },
       data: {
-        gols: user.gols + 1,
+        gols: jogador.gols + 1,
       },
     });
     return result;
@@ -122,7 +127,7 @@ export class UserService {
   async addPelada(id: number, token: string, foreignId: number) {
     const userData = validateFunction(token) as UserDtoNoPassword;
     try {
-      const result = await this.prisma.user.update({
+      const result = await this.prisma.jogador.update({
         where: { id: userData.id },
         data: {
           peladas_cadastradas: {
@@ -130,7 +135,6 @@ export class UserService {
           },
         },
       });
-      delete result.password;
       return result;
     } catch (error) {
       return error;
@@ -140,7 +144,7 @@ export class UserService {
   async rmvPelada(id: number, token: string, foreignId: number) {
     const userData = validateFunction(token) as UserDtoNoPassword;
     try {
-      const result = await this.prisma.user.update({
+      const result = await this.prisma.jogador.update({
         where: { id: userData.id },
         data: {
           peladas_cadastradas: {
@@ -148,7 +152,6 @@ export class UserService {
           },
         },
       });
-      delete result.password;
       return result;
     } catch (error) {
       return error;
@@ -158,7 +161,7 @@ export class UserService {
   async addGrupo(id: number, token: string, foreignId: number) {
     validateFunction(token);
     try {
-      const result = await this.prisma.user.update({
+      const result = await this.prisma.jogador.update({
         where: { id },
         data: {
           grupos_cadastrados: {
@@ -166,7 +169,6 @@ export class UserService {
           },
         },
       });
-      delete result.password;
       return result;
     } catch (error) {
       return error;
@@ -176,7 +178,7 @@ export class UserService {
   async rmvGrupo(id: number, token: string, foreignId: number) {
     validateFunction(token);
     try {
-      const result = await this.prisma.user.update({
+      const result = await this.prisma.jogador.update({
         where: { id },
         data: {
           grupos_cadastrados: {
@@ -184,48 +186,47 @@ export class UserService {
           },
         },
       });
-      delete result.password;
       return result;
     } catch (error) {
       return error;
     }
   }
 
-  async addTime(id: number, token: string, foreignId: number) {
-    validateFunction(token);
-    try {
-      const result = await this.prisma.user.update({
-        where: { id },
-        data: {
-          times: {
-            connect: { id: foreignId },
-          },
-        },
-      });
-      delete result.password;
-      return result;
-    } catch (error) {
-      return error;
-    }
-  }
+  // async addTime(id: number, token: string, foreignId: number) {
+  //   validateFunction(token);
+  //   try {
+  //     const result = await this.prisma.jogador.update({
+  //       where: { id },
+  //       data: {
+  //         times: {
+  //           connect: { id: foreignId },
+  //         },
+  //       },
+  //     });
+  //     delete result.password;
+  //     return result;
+  //   } catch (error) {
+  //     return error;
+  //   }
+  // }
 
-  async rmvTime(id: number, token: string, foreignId: number) {
-    validateFunction(token);
-    try {
-      const result = await this.prisma.user.update({
-        where: { id },
-        data: {
-          times: {
-            disconnect: { id: foreignId },
-          },
-        },
-      });
-      delete result.password;
-      return result;
-    } catch (error) {
-      return error;
-    }
-  }
+  // async rmvTime(id: number, token: string, foreignId: number) {
+  //   validateFunction(token);
+  //   try {
+  //     const result = await this.prisma.user.update({
+  //       where: { id },
+  //       data: {
+  //         times: {
+  //           disconnect: { id: foreignId },
+  //         },
+  //       },
+  //     });
+  //     delete result.password;
+  //     return result;
+  //   } catch (error) {
+  //     return error;
+  //   }
+  // }
 
   async checkToken(token: TokenObj) {
     validateFunction(token.token);

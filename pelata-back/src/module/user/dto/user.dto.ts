@@ -3,13 +3,11 @@ export type UserDto = {
   email: string;
   password: string;
   username: string;
-  posicao: string;
   cep: string;
   rua: string;
   bairro: string;
   cidade: string;
   estado: string;
-  gols: number;
 };
 
 export type UserDtoNoPassword = {
@@ -17,16 +15,14 @@ export type UserDtoNoPassword = {
   email: string;
   password?: string;
   username: string;
-  posicao: string;
   cep: string;
   rua: string;
   bairro: string;
   cidade: string;
   estado: string;
-  gols: number;
 };
 
-export type PatchUserDto = {
+export type PatchJogadorDto = {
   username: string;
   posicao: string;
 };

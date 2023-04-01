@@ -6,9 +6,9 @@ import { validateFunction } from 'src/utils/tokenFunctions';
 import { UserDtoNoPassword } from '../user/dto/user.dto';
 import {
   CriarGrupo,
-  CriarPartida,
+  // CriarPartida,
   CriarPelada,
-  CriarTime,
+  // CriarTime,
 } from './dto/admin.dto';
 
 @Injectable()
@@ -54,28 +54,6 @@ export class AdminService {
     return response;
   }
 
-  async criarPartida(data: CriarPartida) {
-    validateFunction(data.token);
-    const response = await this.prisma.partida.create({
-      data: {
-        pelada_id: data.pelada_id,
-        vencedor_id: data.vencedor_id,
-      },
-    });
-    return response;
-  }
-
-  async criarTime(data: CriarTime) {
-    validateFunction(data.token);
-    const response = await this.prisma.time.create({
-      data: {
-        cor: data.cor,
-        pelada_id: data.pelada_id,
-      },
-    });
-    return response;
-  }
-
   async findAllGrupos(token: string) {
     validateFunction(token);
     return await this.prisma.grupo.findMany({
@@ -84,16 +62,39 @@ export class AdminService {
         jogadores_cadastrados: {
           select: {
             id: true,
-            username: true,
-            cidade: true,
-            estado: true,
+            nome: true,
             posicao: true,
             gols: true,
+            vitorias: true,
+            derrotas: true,
+            empates: true,
           },
         },
       },
     });
   }
+
+  // async criarPartida(data: CriarPartida) {
+  //   validateFunction(data.token);
+  //   const response = await this.prisma.partida.create({
+  //     data: {
+  //       pelada_id: data.pelada_id,
+  //       vencedor_id: data.vencedor_id,
+  //     },
+  //   });
+  //   return response;
+  // }
+
+  // async criarTime(data: CriarTime) {
+  //   validateFunction(data.token);
+  //   const response = await this.prisma.time.create({
+  //     data: {
+  //       cor: data.cor,
+  //       pelada_id: data.pelada_id,
+  //     },
+  //   });
+  //   return response;
+  // }
 
   findOne(id: number) {
     return `This action returns a #${id} admin`;

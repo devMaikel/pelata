@@ -13,8 +13,14 @@ async function main() {
       cidade: 'Natal',
       bairro: 'Bom Pastor',
       rua: 'Av. Lima e Silva',
-      posicao: 'Feroz',
-      gols: 0,
+    },
+  });
+  const jogador = await prisma.jogador.upsert({
+    where: { id: 1 },
+    update: {},
+    create: {
+      user_id: 1,
+      nome: 'maikel',
     },
   });
   const grupo = await prisma.grupo.upsert({
@@ -41,7 +47,7 @@ async function main() {
     },
   });
 
-  console.log(user, grupo, pelada);
+  console.log(user, grupo, pelada, jogador);
 }
 
 main()
