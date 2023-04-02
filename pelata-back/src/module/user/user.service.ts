@@ -192,6 +192,11 @@ export class UserService {
     }
   }
 
+  async checkToken(token: TokenObj) {
+    validateFunction(token.token);
+    return 'Token ok';
+  }
+
   // async addTime(id: number, token: string, foreignId: number) {
   //   validateFunction(token);
   //   try {
@@ -227,11 +232,6 @@ export class UserService {
   //     return error;
   //   }
   // }
-
-  async checkToken(token: TokenObj) {
-    validateFunction(token.token);
-    return 'Token ok';
-  }
 
   async test() {
     // const test = await this.prisma.pelada.create({ //adicionar pelada e já cadastrar um jogador
