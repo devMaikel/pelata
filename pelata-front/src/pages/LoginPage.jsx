@@ -39,7 +39,8 @@ export default function LoginPage() {
 
   useEffect(() => {
     tokenValidate();
-  });
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
   
   useEffect(() => {
     validateInputs()

@@ -102,7 +102,14 @@ export class UserService {
 
   async login({ email, password }) {
     const passwordMd5 = createHash('md5').update(password).digest('hex');
-    const user = await this.prisma.user.findFirst({ where: { email } });
+    const user = await this.prisma.user.findFirst({
+      where: { email },
+      include: { grupos_admin: true },
+    });
+    const jogador = await this.prisma.jogador.findFirst({
+      where: { nome: user.username },
+      include: { grupos_cadastrados: true, peladas_cadastradas: true },
+    });
     if (!user || user.password !== passwordMd5) {
       throw new HttpException('Email ou senha inválidos', 404, {
         cause: new Error('Email ou senha inválidos'),
@@ -110,7 +117,7 @@ export class UserService {
     }
     delete user.password;
     const token = createToken(user);
-    return { ...user, token };
+    return { ...user, jogador, token };
   }
 
   async addGol(id: number, token: string) {
@@ -196,8 +203,19 @@ export class UserService {
   }
 
   async checkToken(token: TokenObj) {
-    validateFunction(token.token);
-    return 'Token ok';
+    const userResponse = validateFunction(token.token);
+
+    const user = await this.prisma.user.findFirst({
+      where: { email: userResponse.email },
+      include: { grupos_admin: true },
+    });
+    const jogador = await this.prisma.jogador.findFirst({
+      where: { nome: user.username },
+      include: { grupos_cadastrados: true, peladas_cadastradas: true },
+    });
+    delete user.password;
+    const newToken = createToken(user);
+    return { ...user, jogador, token: newToken };
   }
 
   // async addTime(id: number, token: string, foreignId: number) {
