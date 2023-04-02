@@ -5,7 +5,6 @@ import { checkToken, loginUser } from '../api/userApi';
 import getFromLocalStorage from '../helpers/getFromLS';
 import Button from 'react-bootstrap/Button';
 import Modal from 'react-bootstrap/Modal';
-import Alert from 'react-bootstrap/Alert';
 import Form from 'react-bootstrap/Form';
 
 export default function LoginPage() {
@@ -77,10 +76,22 @@ export default function LoginPage() {
               onChange={ userOnChange }
               name="email-input"
             />
+            { 
+              !validateEmail() && 
+                (<Form.Text className="text-muted">
+                  Informe um email válido.
+                </Form.Text>)
+            }
           </Form.Group>
           <Form.Group className="mb-3" controlId="exampleForm.ControlInput2">
             <Form.Label>Senha</Form.Label>
             <Form.Control type="password" placeholder="Digite sua senha" onChange={ userOnChange }/>
+            { 
+              inputPassword.length < 6 && 
+                (<Form.Text className="text-muted">
+                  Senha deve ter mais de 6 dígitos.
+                </Form.Text>)
+            }
           </Form.Group>
           <Button
             onClick={ () => loginClick({ email: inputEmail, password: inputPassword}) }
@@ -103,8 +114,6 @@ export default function LoginPage() {
           </Button>
         </Modal.Footer>
       </Modal>
-        { !validateEmail() && <Alert variant='danger'>Informe um e-mail válido</Alert> }
-        { inputPassword.length < 6 && <Alert variant='danger'>Senha deve ter mais de 6 dígitos</Alert> }
       </div>
       <div>
         <p>Não tem uma conta ainda? Faça o seu cadastro no botão abaixo!</p>

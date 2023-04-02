@@ -79,3 +79,15 @@ export const getUserById = async (id) => {
     return false;
   }
 }
+
+export const registerUser = async (user) => {
+  const api = axios.create({
+    baseURL: 'http://localhost:3000/user'
+  });
+  try {
+    const { data } = await api.post('/create', user);
+    return data;
+  } catch (err) {
+    return err.response.data;
+  }
+}

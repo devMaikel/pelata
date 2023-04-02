@@ -3,14 +3,20 @@ import LoginHeader from '../components/LoginHeader'
 import Form from 'react-bootstrap/Form'
 import Button from 'react-bootstrap/esm/Button'
 import Alert from 'react-bootstrap/Alert';
+import { registerUser } from '../api/userApi';
+import Modal from 'react-bootstrap/Modal';
+import { useNavigate } from 'react-router-dom';
 
 export default function RegisterPage() {
   const [ email, setEmail ] = useState('');
   const [ name, setName ] = useState('');
   const [ cep, setCep ] = useState('');
   const [ password, setPassword ] = useState('');
-  const [ invalidData, setInvalidData ] = useState(false)
+  const [ invalidData, setInvalidData ] = useState(false);
+  const [ responseError, setResponseError ] = useState('');
 
+  let navigate = useNavigate();
+  const loginPath = '/';
   const validateEmail = () => (/\S+@\S+\.\S+/).test(email);
 
   const userOnChange = ({ target: { value, name }}) => {
@@ -35,10 +41,15 @@ export default function RegisterPage() {
   const checkInputs = () => {
     return !validateEmail() || name.length < 4 || cep.length !== 8 || password.length < 4
   }
-  console.log(checkInputs());
 
-  const loginClick = (user) => {
+  const loginClick = async (user) => {
     setInvalidData(checkInputs());
+    const response = await registerUser(user);
+    if (response.statusCode === 400) {
+      setResponseError(response.message);
+    } else {
+      setResponseError('Cadastrado');
+    }
   }
 
   return (
@@ -80,11 +91,40 @@ export default function RegisterPage() {
       <Button 
         variant="primary" 
         type="button"
-        onClick={ () => loginClick({ })}
+        onClick={ () => loginClick({ 
+          email,
+          password,
+          username: name,
+          cep
+        })}
       >
         Submit
       </Button>
+      { responseError === 'Usuário já existe' && <Alert variant='danger'>Usuário / Email já cadastrado!</Alert> }
+      { responseError === 'Cep inválido' && <Alert variant='danger'>CEP inválido! Informe um CEP real.</Alert> }
     </Form>
+
+    <Modal show={responseError === 'Cadastrado'}>
+        <Modal.Header closeButton>
+          <Modal.Title>Usuário cadastrado com sucesso!</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>Clique para voltar para tela de login</Modal.Body>
+        <Modal.Footer>
+          <Button variant="primary" onClick={() => { navigate(loginPath) }}>
+            Ok
+          </Button>
+        </Modal.Footer>
+      </Modal>
     </div>
   )
 }
+
+// id?: number;
+//     email: string;
+//     password: string;
+//     username: string;
+//     cep: string;
+//     rua: string;
+//     bairro: string;
+//     cidade: string;
+//     estado: string;
