@@ -14,6 +14,7 @@ export default function RegisterPage() {
   const [ password, setPassword ] = useState('');
   const [ invalidData, setInvalidData ] = useState(false);
   const [ responseError, setResponseError ] = useState('');
+  const [ checkbox, setCheckbox ] = useState(false);
 
   let navigate = useNavigate();
   const loginPath = '/';
@@ -39,11 +40,12 @@ export default function RegisterPage() {
   };
 
   const checkInputs = () => {
-    return !validateEmail() || name.length < 4 || cep.length !== 8 || password.length < 4
+    return !validateEmail() || name.length < 4 || cep.length !== 8 || password.length < 4 || !checkbox
   }
 
   const loginClick = async (user) => {
     setInvalidData(checkInputs());
+    if (checkInputs()) return false;
     const response = await registerUser(user);
     if (response.statusCode === 400) {
       setResponseError(response.message);
@@ -51,7 +53,7 @@ export default function RegisterPage() {
       setResponseError('Cadastrado');
     }
   }
-
+  
   return (
     <div>
       <LoginHeader/>
@@ -86,8 +88,15 @@ export default function RegisterPage() {
       </Form.Group>
       { invalidData && password.length < 6 && <Alert variant='danger'>Senha deve ter mais de 6 dígitos</Alert> }
       <Form.Group className="mb-3" controlId="formBasicCheckbox">
-        <Form.Check inline type="checkbox" label="Concordo com os termos de uso" />
+        <Form.Check 
+          inline 
+          type="checkbox" 
+          label="Concordo com os termos de uso" 
+          checked={ checkbox }
+          onChange={ () => setCheckbox(!checkbox) }
+        />
       </Form.Group>
+      { invalidData && !checkbox  && <Alert variant='danger'>É preciso aceitar os termos meu camarada!</Alert> }
       <Button 
         variant="primary" 
         type="button"
@@ -100,7 +109,7 @@ export default function RegisterPage() {
       >
         Submit
       </Button>
-      { responseError === 'Usuário já existe' && <Alert variant='danger'>Usuário / Email já cadastrado!</Alert> }
+      { responseError === 'Usuário já existe' && <Alert variant='danger'>Nome de usuário ou Email já cadastrado!</Alert> }
       { responseError === 'Cep inválido' && <Alert variant='danger'>CEP inválido! Informe um CEP real.</Alert> }
     </Form>
 
@@ -118,13 +127,3 @@ export default function RegisterPage() {
     </div>
   )
 }
-
-// id?: number;
-//     email: string;
-//     password: string;
-//     username: string;
-//     cep: string;
-//     rua: string;
-//     bairro: string;
-//     cidade: string;
-//     estado: string;

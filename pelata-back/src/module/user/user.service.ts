@@ -44,6 +44,9 @@ export class UserService {
     const newUser = await this.prisma.user.create({
       data,
     });
+    await this.prisma.jogador.create({
+      data: { nome: newUser.username, user_id: newUser.id },
+    });
     return newUser;
   }
 
