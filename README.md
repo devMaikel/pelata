@@ -1,6 +1,6 @@
 # Projeto Pelata
   
-  Olá ! Este é um projeto pessoal que desenvolvi usando principalmente ReactJS, Node/NestJS, Typescript, Prisma, React-Bootstrap e pretendo
+  Olá ! Este é um projeto pessoal que estou desenvolvendo usando principalmente ReactJS, Node/NestJS, Typescript, Prisma, React-Bootstrap e pretendo
   fazer uma versão com React-Native
   
    ## Funcionalidades:
